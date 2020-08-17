@@ -66,8 +66,13 @@ const init = async () => {
                    daiWeth.getOutputAmount(new TokenAmount(dai, AMOUNT_DAI_WEI)),
                    daiWeth.getOutputAmount(new TokenAmount(weth, AMOUNT_ETH_WEI)),
             ]);
-
-            console.log(uniswapResult);
+            //console.log(uniswapResult);
+            const uniswapRates = {
+                buy: parseFloat(AMOUNT_DAI_WEI / (uniswapResult[0][0].toExact() * 10 ** 18)),
+                sell: parseFloat(uniswapResult[1][0].toExact() / AMOUNT_ETH)
+            };
+            console.log('Uniswap ETH/DAI');
+            console.log(uniswapRates);
         })
         .on('error', error => {
             console.log(error);
