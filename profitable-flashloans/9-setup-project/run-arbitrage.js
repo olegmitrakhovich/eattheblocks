@@ -67,7 +67,7 @@ const init = async () => {
                    daiWeth.getOutputAmount(new TokenAmount(weth, AMOUNT_ETH_WEI)),
             ]);
 
-            console.log(uniswapResults);
+            console.log(uniswapResult);
         })
         .on('error', error => {
             console.log(error);
