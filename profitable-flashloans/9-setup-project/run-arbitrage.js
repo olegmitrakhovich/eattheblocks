@@ -73,6 +73,26 @@ const init = async () => {
             };
             console.log('Uniswap ETH/DAI');
             console.log(uniswapRates);
+            
+            //predicting gas price
+            const gasPrice = await web3.eth.getGasPrice();
+            const txCost = 200000 * parseInt(gasPrice);
+            const currentEthPrice = (uniswapRates.buy + uniswapRates.sell) / 2;
+            const profit1 = (parseInt(AMOUNT_ETH_WEI) / 10 ** 18) * (uniswapRates.sell - kyberRates.buy) - (txCost / 10 ** 18) * currentEthPrice; //buy ETH on kyber and sell it on uniswap
+            const profit2 = (parseInt(AMOUNT_ETH_WEI) / 10 ** 18) * (kyberRates.sell - uniswapRates.buy) - (txCost / 10 ** 18) * currentEthPrice; //buy ETH on uniswap and sell it on kyber
+            
+            //checking for ARB
+            if(profit1 > 0 ){
+                console.log('ARB found!');
+                console.log(`Buy ETH on Kyber at ${kyberRates.buy} dai`);
+                console.log(`Sell ETH on Uniswap at ${uniswapRates.sell} dai`);
+                console.log (`Expected profit: ${profit1} dai`);
+            }else if(profit2 > 0) {
+                console.log('ARB found!');
+                console.log(`Buy ETH on Uniswap at ${uniswapRates.buy} dai`);
+                console.log(`Sell ETH on Kyber at ${kyberRates.sell} dai`);
+                console.log (`Expected profit: ${profit2} dai`);
+            }
         })
         .on('error', error => {
             console.log(error);
