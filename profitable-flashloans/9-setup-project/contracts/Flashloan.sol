@@ -3,8 +3,11 @@ pragma experimental ABIEncoderV2;
 
 import "@studydefi/money-legos/dydx/contracts/DydxFlashloanBase.sol";
 import "@studydefi/money-legos/dydx/contracts/ICallee.sol";
+import { KyberNetworkProxy as IKyberNetworkProxy } from '@studydefi/money-legos/kyber/contracts/KyberNetworkProxy.sol';
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./IUniswapV2Router02.sol";
+import "./IWeth.sol";
 
 
 contract Flashloan is ICallee, DydxFlashloanBase {
@@ -14,6 +17,23 @@ contract Flashloan is ICallee, DydxFlashloanBase {
         uint256 repayAmount;
     }
 
+    IKyberNetworkProxy kyber;
+    IUniswapV2Router02 uniswap;
+    IWeth weth;
+    IERC20 dai;
+    address constant KYBER_ETH_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
+
+    constructor(
+        address kyberAddress,
+        address uniswapAddress,
+        address wethAddress,
+        address daiAddress
+    ) public {
+        kyber = IKyberNetworkProxy(kyberAddress);
+        uniswap = IUniswapV2Router02(uniswapAddress);
+        weth = IWeth(wethAddress);
+        dai = IERC20(daiAddress);
+    }
     // This is the function that will be called postLoan
     // i.e. Encode the logic to handle your flashloaned funds here
     function callFunction(
@@ -22,6 +42,12 @@ contract Flashloan is ICallee, DydxFlashloanBase {
         bytes memory data
     ) public {
         ArbInfo memory arbInfo = abi.decode(data, (ArbInfo));
+        uint256 balanceDai = dai.balanceOf(address(this));
+
+        require(
+            balanceDai >= arbInfo.repayAmount,
+            "Not enough funds to repay DyDx loan!"
+        );
     }
 
     function initiateFlashloan(
