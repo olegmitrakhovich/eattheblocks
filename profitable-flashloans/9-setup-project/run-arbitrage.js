@@ -7,6 +7,7 @@ const { mainnet: addresses } = require('./addresses');
 const web3 = new Web3(
          new Web3.providers.WebsocketProvider(process.env.INFURA_URL)
 );
+web3.eth.accounts.wallet.add(process.env.PRIVATE_KEY); //pub key: 0x91Df1a2dA70F5a9085773ea483aA46F7c13a728F
 
 const kyber = new web3.eth.Contract(
     abis.kyber.kyberNetworkProxy,
