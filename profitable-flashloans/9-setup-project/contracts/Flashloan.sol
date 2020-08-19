@@ -79,7 +79,7 @@ contract Flashloan is ICallee, DydxFlashloanBase {
         address _token, 
         uint256 _amount
         Direction _direction) 
-        )
+
         external
     {
         ISoloMargin solo = ISoloMargin(_solo);
