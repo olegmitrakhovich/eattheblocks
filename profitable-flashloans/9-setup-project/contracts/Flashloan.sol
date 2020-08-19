@@ -50,7 +50,7 @@ contract Flashloan is ICallee, DydxFlashloanBase {
             dai.approve(address(kyber), balanceDai);
             (uint expectedRate, ) = expectedkyber.getExpectedRate( //ignore expected rate parameter
                 dai,
-                IERC20(KYBER_ETH_ADDRESS);
+                IERC20(KYBER_ETH_ADDRESS),
                 balanceDai
             );
             kyber.swapTokenToEther(dai, balanceDai, expectedRate);
