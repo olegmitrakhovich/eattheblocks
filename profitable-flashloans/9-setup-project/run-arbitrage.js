@@ -60,8 +60,8 @@ const init = async () => {
                 buy: parseFloat(1 / (kyberResults[0].expectedRate / (10 ** 18))),
                 sell: parseFloat(kyberResults[1].expectedRate / (10 ** 18))
             };
-            console.log('Kyber ETH/DAI');
-            console.log(kyberRates);
+            //console.log('Kyber ETH/DAI'); //buy and sell prices
+            //console.log(kyberRates);
 
             const uniswapResult = await Promise.all([
                    daiWeth.getOutputAmount(new TokenAmount(dai, AMOUNT_DAI_WEI)),
@@ -72,8 +72,8 @@ const init = async () => {
                 buy: parseFloat(AMOUNT_DAI_WEI / (uniswapResult[0][0].toExact() * 10 ** 18)),
                 sell: parseFloat(uniswapResult[1][0].toExact() / AMOUNT_ETH)
             };
-            console.log('Uniswap ETH/DAI');
-            console.log(uniswapRates);
+            //console.log('Uniswap ETH/DAI'); //buy and sell prices
+            //console.log(uniswapRates);
             
             //predicting gas price
             const gasPrice = await web3.eth.getGasPrice();
