@@ -75,9 +75,11 @@ module.exports = {
         process.env.INFURA_URL
       ),
       network_id: 1,
-      networkCheckTimeout: 15000,
+      networkCheckTimeout: 20000,
       //gas: 8500000,
-      gasPrice: 120000000000
+      //gas: 12400000,
+      //gas: 2000000,
+      gasPrice: 95000000000
     },
 
     // Useful for private networks
